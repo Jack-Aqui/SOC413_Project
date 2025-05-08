@@ -1,5 +1,5 @@
 project:
-  title: "Research Template"
+  title: "ASD Research Project"
   output-dir: _products
   execute-dir: project
   pre-render: 
@@ -14,21 +14,21 @@ project:
     - "!bibliography/"
 
 author:
-  - name: Aaron Gullickson
+  - name: Jack Aqui
     orcid: 0000-0001-7237-8131
-    email: aarong@uoregon.edu
-    url: https://aarongullickson.netlify.app/
+    email: jaqui@uoregon.edu
+    url: https://github.com/Jack-Aqui
     attributes:
       corresponding: true
     affiliations:
       - id: uo
         name: University of Oregon
-        department: Sociology
-        address: 727 PLC
+        department: Data Science Student
+        address: 760 E 13th Ave
         city: Eugene
         region: OR
         country: USA
-        postal-code: 97405
+        postal-code: 97401
   
 execute: 
   freeze: false
