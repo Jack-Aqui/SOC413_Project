@@ -1,0 +1,16 @@
+Version: 1.0
+ProjectId: 395f482e-7c6a-4a7f-a5ce-283145f985e6
+
+RestoreWorkspace: Default
+SaveWorkspace: Default
+AlwaysSaveHistory: Default
+
+EnableCodeIndexing: Yes
+UseSpacesForTab: Yes
+NumSpacesForTab: 2
+Encoding: UTF-8
+
+RnwWeave: Sweave
+LaTeX: pdfLaTeX
+
+ProjectName: SOC413
