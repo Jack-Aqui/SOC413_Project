@@ -1,5 +1,5 @@
 project:
-  title: "ASD Research Project"
+  title: "Health and Income Research Project"
   output-dir: _products
   execute-dir: project
   pre-render: 
