@@ -8,6 +8,16 @@ title: "Organize Data Notebook"
 library(here)
 source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
-```
 
-This quarto doc is used to organize the data.
+
+health_income_raw <- read_csv(
+'/Users/johnaqui/Documents/Coding/SOC413/data/data_raw/health_data.csv', 
+                              # absolute path because of non parrelel directories
+                              # file has headers
+                   na = c("na", "NA", "..", "."),  # missing value codes
+                   n_max = 6,                      # stop reading after n obs
+                   skip = 0,                      
+                   comment = "#")
+
+health_income_raw
+```
