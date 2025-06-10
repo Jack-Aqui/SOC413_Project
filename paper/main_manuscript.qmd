@@ -6,7 +6,7 @@ keywords: [keyword1, keyword2]
 thanks: Thanks to everyone for checking this out.
 reference-section-title: References
 bibliography: ../bibliography/project.bib
-csl: ../bibliography/chicago-parenthetical.csl
+csl: apa.csl
 format:
   aog-article-pdf:
     keep-tex: false
@@ -32,9 +32,24 @@ source(here("utils","functions.R"))
 
 # Introduction
 
-This quarto doc is for writing the manuscript. This is a test citation [@alba1990].
+Research Question: How do individual’s health conditions affect the economic 
+status of an individual’s household?
 
-# Background
+In this field of research, the general approach has been focusing on attempting 
+to establish the causality between these two variables. Research has shown that 
+both low economic status leads to developing health conditions and developing 
+health conditions leads to low economic status. However, there is frequent 
+debate about how much one impacts the other, and which occurs more 
+frequently [@Marmot2002]. Recent studies attempting to better understand 
+causality have primarily sound that it is prior health conditions that lead to 
+low economic status later in life [@Economou2011]. However, this 
+relationship has rarely been fully explored when looking at younger generations.
+This is why I will be using data that covers a pool of participants between the
+ages of 12 to 36. Rather than attempt to establish a direction of causality, the 
+objective of this paper is to explore the strength and shape of the relationship
+between health conditions and economic status and infer the possible 
+implications from said relationship. 
+
 
 # Data and Methods
 
