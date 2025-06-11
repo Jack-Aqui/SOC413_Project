@@ -5,9 +5,85 @@ title: "Health & Income Research Analysis"
 ```{r}
 #| label: setup
 #| include: false
+#| 
 library(here)
 source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
+load(here("data","data_constructed","analytical_data.RData))
 ```
 
-save(cleaned_dataset, file=here("data","data_constructed","analytical_data.RData))
+
+```{r}
+## Steps missed during cleaning
+cleaned_dataset
+cleaned_dataset <- cleaned_dataset |>
+  filter(!is.na(HasCondition))
+cleaned_dataset # eliminate entries that did not answer if they have condition
+cleaned_dataset <- cleaned_dataset |>
+  mutate(
+    ConditionGroup = case_when(
+      HasCondition == 0 ~ "No Condition",
+      HasCondition == 1 ~ "Has Condition",
+      TRUE ~ NA_character_
+    )
+  )
+cleaned_dataset <- cleaned_dataset |> # eliminate invalid income values
+    filter(!Income %in% c(-1, -2, -9))
+```
+
+```{r}
+## Baseline Income Distributions
+#| label: fig-histogram 1
+#| fig-cap: Histogram of Income Distribution across all Participants
+
+ggplot(cleaned_dataset, aes(x = Income)) +
+  geom_histogram(binwidth = 250) +
+  labs(title = "General Income Distribution", x = "Income ($)", y = "Count")
+
+#| label: fig-histogram 2
+#| fig-cap: Histogram of Income Distribution with No Health Condition
+  
+  no_condition <- cleaned_dataset |>
+  filter(HasCondition == 0)
+
+  ggplot(no_condition, aes(x = Income)) +
+  geom_histogram(binwidth = 250) +
+  labs(title = "Has Condition Income Distribution", x = "Income ($)", y = "Count")
+
+#| label: fig-histogram 3
+#| fig-cap: Histogram of Income Distribution with Health Condition
+  has_condition <- cleaned_dataset |>
+  filter(HasCondition == 1)
+
+  ggplot(has_condition, aes(x = Income)) +
+  geom_histogram(binwidth = 250) +
+  labs(title = "No Condition Income Distribution", x = "Income ($)", y = "Count")
+  
+ggplot(cleaned_dataset, aes(x = Income, fill = ConditionGroup)) +
+  geom_histogram(position = "identity", alpha = 0.5, binwidth = 250) +
+  labs(title = "Income Distributions by Health Condition",
+       x = "Income ($)",
+       y = "Count") +
+  scale_fill_manual(values = c("steelblue", "tomato")) +
+  theme_minimal()
+
+## Income Summary Comparison
+income_summary <- cleaned_dataset |>
+  group_by(ConditionGroup) |>
+  summarize(
+    count = n(),
+    mean_income = mean(Income, na.rm = TRUE),
+    median_income = median(Income, na.rm = TRUE),
+    min_income = min(Income, na.rm = TRUE),
+    max_income = max(Income, na.rm = TRUE),
+    income_range = max_income - min_income
+  )
+income_summary
+```
+When looking at the income summaries, the most noticable difference in the 
+range in income. The group with no health condition has a maximum value of 25000
+while the group with only has 8000 (granted this 25000 figure is an outlier). 
+Additionally the median and mean incomes are both lower for the group with a 
+health condition. When looking visually, both distributions look pretty similar:
+right skewed distributions that taper off as you approach higher income values. 
+

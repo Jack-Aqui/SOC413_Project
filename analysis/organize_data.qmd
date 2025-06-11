@@ -15,7 +15,7 @@ health_income_raw <- read_csv(
                               # absolute path because of non parrelel directories
                               # file has headers
                    na = c("na", "NA", "..", "."),  # missing value codes
-                   n_max = 8984,                      # Total number participants
+                   n_max = 8985,                      # Total number participants
                    skip = 0,                      
                    comment = "#")
 
@@ -101,5 +101,5 @@ data_constructed <- data_constructed %>%
     )
   )
 cleaned_dataset <- data_constructed
-save(cleaned_dataset, file=here("data","data_constructed","analytical_data.RData))
+save(cleaned_dataset, file=here("data","data_constructed","analytical_data.RData"))
 ```
