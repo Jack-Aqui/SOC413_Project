@@ -10,8 +10,7 @@ source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
 
 ## Load raw data
-health_income_raw <- read_csv(
-'/Users/johnaqui/Documents/Coding/SOC413/data/data_raw/health_data.csv', 
+health_income_raw <- read_csv(here("data", "data_raw", "health_data.csv"), 
                               # absolute path because of non parrelel directories
                               # file has headers
                    na = c("na", "NA", "..", "."),  # missing value codes
