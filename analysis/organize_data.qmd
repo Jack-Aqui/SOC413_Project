@@ -9,15 +9,97 @@ library(here)
 source(here("utils","check_packages.R"))
 source(here("utils","functions.R"))
 
-
+## Load raw data
 health_income_raw <- read_csv(
 '/Users/johnaqui/Documents/Coding/SOC413/data/data_raw/health_data.csv', 
                               # absolute path because of non parrelel directories
                               # file has headers
                    na = c("na", "NA", "..", "."),  # missing value codes
-                   n_max = 6,                      # stop reading after n obs
+                   n_max = 8984,                      # Total number participants
                    skip = 0,                      
                    comment = "#")
 
 health_income_raw
+
+data <- health_income_raw
+# notes on raw data
+# value of -4 means question was skipped
+# for limited by condition section, 0 = none, 1 = somewhat, 2 = a lot
+# None of the responses regarded specific conditions were refused or "I don't know"
+# All participants identified as male or female
+
+
+
+data_constructed <- data |>
+  rename(
+    YouthID = PUBID,
+    Income = "YINC-1700",
+    Sex = "KEY!SEX",
+    BMonth = "KEY!BDATE_M",
+    BYear = "KEY!BDATE_Y",
+    HasCondition = "PC9-032",
+    HasAsthma = "PC9-033_000001",
+    HasHeartCond = "PC9-033_000002",
+    HasAnemia = "PC9-033_000003",
+    HasDiabetes = "PC9-033_000004",
+    HasCancer = "PC9-033_000005",
+    HasEpilepsy = "PC9-033_000006",
+    HasInfect = "PC9-033_000008",
+    HasKidney = "PC9-033_000009",
+    HasAllergies = "PC9-033_000010",
+    HasOther = "PC9-033_000007",
+    AgeAsthma = "PC9-038.01",
+    AgeHeart = "PC9-038.02",
+    AgeAnemia = "PC9-038.03",
+    AgeDiabetes = "PC9-038.04",
+    AgeCancer = "PC9-038.05",
+    AgeEpilepsy = "PC9-038.06",
+    LimitAsthma = "PC9-039.01",
+    LimitHeart = "PC9-039.02",
+    LimitAnemia = "PC9-039.03",
+    LimitDiabetes = "PC9-039.04",
+    LimitCancer = "PC9-039.05",
+    LimitEpilepsy = "PC9-039.06",
+    SampleType = "CV_SAMPLE_TYPE",
+    Race = "KEY!RACE_ETHNICITY"
+  )
+
+## Replace special missing values (-4, -1) with NA
+
+## Convert numeric codes to labeled factors (race, gender, etc.)
+
+data_constructed <- data_constructed |>
+  mutate(
+    Sex = factor(Sex, levels = c(1, 2), labels = c("Male", "Female")), # sex label
+    Race = factor(Race, levels = c(1,2,3,4), labels = c("Black", 
+                                                        "Hispanic", 
+                                                        "Mixed",
+                                                        "Non-Black/Non-Hispanic"
+                                                        )), # race label
+    across(where(is.double), ~ na_if(.x, -4)) # replace missing with NA
+    )
+
+## Added income bracket group
+
+data_constructed <- data_constructed %>%
+  mutate(
+    income_bracket = cut(
+      Income,
+      breaks = c(0, 500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, Inf),
+      labels = c(
+        "0–499",
+        "500–999",
+        "1000–1499",
+        "1500–1999",
+        "2000–2499",
+        "2500–2999",
+        "3000–3999",
+        "4000–4999",
+        "5000+"
+      ),
+      right = FALSE
+    )
+  )
+cleaned_dataset <- data_constructed
+save(cleaned_dataset, file=here("data","data_constructed","analytical_data.RData))
 ```
